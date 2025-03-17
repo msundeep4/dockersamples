@@ -1,0 +1,32 @@
+<html>
+    <head><title>Welcome to Docker Application</title></head>
+    <body><p>
+        Artifact download
+This example YAML file publishes the artifact WebSite and then downloads the artifact to $(Pipeline.Workspace). The Deploy job only runs if the Build job is successful.
+<br/>
+---
+jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - script: npm test
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: $(System.DefaultWorkingDirectory)
+          artifactName: WebSite
+  - job: Deploy
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - checkout: none
+      - task: DownloadBuildArtifacts@0
+        displayName: Download Build Artifacts
+        inputs:
+          artifactName: WebSite
+          downloadPath: $(Pipeline.Workspace)
+    dependsOn: Build
+    condition: succeeded()
+
+    </p></body>
+</html>

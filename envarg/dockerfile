@@ -1,0 +1,11 @@
+FROM openjdk:17
+LABEL org="smulampa Org"
+LABEL auth="smulampa Organization"
+ARG download_location='https://myspappstorage.s3.us-west-1.amazonaws.com/spring-petclinic-2.4.2.jar'
+# RUN wget https://myspappstorage.s3.us-west-1.amazonaws.com/spring-petclinic-2.4.2.jar
+ENV FILE_LOCATION='spring-petclinic-2.4.2.jar'
+#EXPOSE 8080
+#CMD [ "java", "-jar", "spring-petclinic-2.4.2.jar" ]
+ADD ${download_location} ${FILE_LOCATION}
+EXPOSE 8080
+CMD java -jar ${FILE_LOCATION}
